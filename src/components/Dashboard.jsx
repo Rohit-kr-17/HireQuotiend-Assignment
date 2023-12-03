@@ -125,7 +125,11 @@ function Dashboard() {
 				item.email.toLowerCase().includes(searchTerm) ||
 				item.role.toLowerCase().includes(searchTerm)
 		);
-		setCurrentData(filteredData);
+		if (searchTerm.length === 0) {
+			setCurrentData(() => {
+				return data.slice(offset, offset + itemsPerPage);
+			});
+		} else setCurrentData(filteredData);
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
