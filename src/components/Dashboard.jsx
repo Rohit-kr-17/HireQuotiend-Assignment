@@ -5,7 +5,7 @@ import { RiEditBoxLine } from "react-icons/ri";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { CiSaveDown2 } from "react-icons/ci";
-import { temp } from "./temp";
+
 function Dashboard() {
 	//State
 	const [data, setData] = useState([]);
@@ -48,19 +48,6 @@ function Dashboard() {
 		const updateCurrentdata = data.slice(offset, offset + itemsPerPage);
 		setCurrentData(updateCurrentdata);
 	}, [currentPage, data]);
-	const search = (event) => {
-		setSearchTerm(event.target.value.toLowerCase());
-		// Reset to the first page after a search
-	};
-	const searchData = () => {
-		const filteredData = currentData.filter(
-			(item) =>
-				item.name.toLowerCase().includes(searchTerm) ||
-				item.email.toLowerCase().includes(searchTerm) ||
-				item.role.toLowerCase().includes(searchTerm)
-		);
-		setCurrentData(filteredData);
-	};
 
 	//select
 	const selectAll = () => {
@@ -127,10 +114,28 @@ function Dashboard() {
 		setCurrentData(updatedData);
 	};
 
+	//Search section
+	const search = (event) => {
+		setSearchTerm(event.target.value.toLowerCase());
+	};
+	const searchData = () => {
+		const filteredData = currentData.filter(
+			(item) =>
+				item.name.toLowerCase().includes(searchTerm) ||
+				item.email.toLowerCase().includes(searchTerm) ||
+				item.role.toLowerCase().includes(searchTerm)
+		);
+		setCurrentData(filteredData);
+	};
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		searchData();
+	};
+
 	return (
 		<div className="p-5">
 			<div className="flex justify-between mb-5">
-				<form className="flex items-center">
+				<form className="flex items-center" onSubmit={handleSubmit}>
 					<input
 						className="focus:outline-none h-8 p-2 rounded-l-md border-r-0  border-2"
 						type="text"
